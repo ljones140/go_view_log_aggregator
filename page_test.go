@@ -14,9 +14,7 @@ func TestPageCreation(t *testing.T) {
 	})
 	t.Run("created with visit count of 0", func(t *testing.T) {
 		page := Page{Name: "index"}
-		if page.Visits != 0 {
-			t.Errorf("number of vists got %d wanted %d", page.Visits, 0)
-		}
+		assertPageVisits(t, page.Visits, 0)
 	})
 }
 
@@ -25,8 +23,14 @@ func TestAddingPageVisits(t *testing.T) {
 		page := Page{Name: "index"}
 		address := net.ParseIP("192.0.2.1")
 		page.AddVisit(address)
-		if page.Visits != 1 {
-			t.Errorf("number of visits got %d wanted %d", page.Visits, 1)
-		}
+
+		assertPageVisits(t, page.Visits, 1)
 	})
+}
+
+func assertPageVisits(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("number of visits got %d wanted %d", got, want)
+	}
 }
