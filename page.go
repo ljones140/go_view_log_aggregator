@@ -3,10 +3,25 @@ package main
 import "net"
 
 type Page struct {
-	Name   string
-	Visits int
+	Name        string
+	Visits      int
+	UniqueViews int
+	vistorIPs   []net.IP
 }
 
-func (p *Page) AddVisit(address net.IP) {
+func (p *Page) AddVisit(visitIP net.IP) {
 	p.Visits = p.Visits + 1
+	if p.visitAddressUnique(visitIP) {
+		p.UniqueViews = p.UniqueViews + 1
+		p.vistorIPs = append(p.vistorIPs, visitIP)
+	}
+}
+
+func (p *Page) visitAddressUnique(visitIP net.IP) bool {
+	for _, ip := range p.vistorIPs {
+		if ip.Equal(visitIP) {
+			return false
+		}
+	}
+	return true
 }

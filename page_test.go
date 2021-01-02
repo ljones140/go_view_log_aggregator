@@ -16,6 +16,10 @@ func TestPageCreation(t *testing.T) {
 		page := Page{Name: "index"}
 		assertPageVisits(t, page.Visits, 0)
 	})
+	t.Run("created with unique view count of 0", func(t *testing.T) {
+		page := Page{Name: "index"}
+		assertUniqueViews(t, page.Visits, 0)
+	})
 }
 
 func TestAddingPageVisits(t *testing.T) {
@@ -26,11 +30,36 @@ func TestAddingPageVisits(t *testing.T) {
 
 		assertPageVisits(t, page.Visits, 1)
 	})
+
+	t.Run("unique view count is incremented when visits are from different ips", func(t *testing.T) {
+		page := Page{Name: "index"}
+		page.AddVisit(net.ParseIP("192.0.2.1"))
+		page.AddVisit(net.ParseIP("192.1.1.1"))
+
+		assertPageVisits(t, page.Visits, 2)
+		assertUniqueViews(t, page.UniqueViews, 2)
+	})
+
+	t.Run("unique view count is not incremented when visits from same ip", func(t *testing.T) {
+		page := Page{Name: "index"}
+		page.AddVisit(net.ParseIP("192.0.2.1"))
+		page.AddVisit(net.ParseIP("192.0.2.1"))
+
+		assertPageVisits(t, page.Visits, 2)
+		assertUniqueViews(t, page.UniqueViews, 1)
+	})
 }
 
 func assertPageVisits(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("number of visits got %d wanted %d", got, want)
+	}
+}
+
+func assertUniqueViews(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("number of unique views got %d wanted %d", got, want)
 	}
 }
