@@ -12,14 +12,6 @@ func TestPageCreation(t *testing.T) {
 			t.Errorf("got page name %q wanted %q", page.Name, "index")
 		}
 	})
-	t.Run("created with visit count of 0", func(t *testing.T) {
-		page := Page{Name: "index"}
-		assertPageVisits(t, page.Visits, 0)
-	})
-	t.Run("created with unique view count of 0", func(t *testing.T) {
-		page := Page{Name: "index"}
-		assertUniqueViews(t, page.Visits, 0)
-	})
 }
 
 func TestAddingPageVisits(t *testing.T) {
