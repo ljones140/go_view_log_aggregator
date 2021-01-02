@@ -10,9 +10,9 @@ type Page struct {
 }
 
 func (p *Page) AddVisit(visitIP net.IP) {
-	p.Visits = p.Visits + 1
+	p.Visits++
 	if p.visitAddressUnique(visitIP) {
-		p.UniqueViews = p.UniqueViews + 1
+		p.UniqueViews++
 		p.vistorIPs = append(p.vistorIPs, visitIP)
 	}
 }
