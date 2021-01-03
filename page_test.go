@@ -1,13 +1,15 @@
-package main
+package logagg_test
 
 import (
 	"net"
 	"testing"
+
+	logagg "github.com/ljones140/go_view_log_aggregator"
 )
 
 func TestPageCreation(t *testing.T) {
 	t.Run("it is created with a page name", func(t *testing.T) {
-		page := Page{Name: "index"}
+		page := logagg.Page{Name: "index"}
 		if page.Name != "index" {
 			t.Errorf("got page name %q wanted %q", page.Name, "index")
 		}
@@ -16,7 +18,7 @@ func TestPageCreation(t *testing.T) {
 
 func TestAddingPageVisits(t *testing.T) {
 	t.Run("visit count is incremented when visit is added", func(t *testing.T) {
-		page := Page{Name: "index"}
+		page := logagg.Page{Name: "index"}
 		address := net.ParseIP("192.0.2.1")
 		page.AddVisit(address)
 
@@ -24,7 +26,7 @@ func TestAddingPageVisits(t *testing.T) {
 	})
 
 	t.Run("unique view count is incremented when visits are from different ips", func(t *testing.T) {
-		page := Page{Name: "index"}
+		page := logagg.Page{Name: "index"}
 		page.AddVisit(net.ParseIP("192.0.2.1"))
 		page.AddVisit(net.ParseIP("192.1.1.1"))
 
@@ -33,7 +35,7 @@ func TestAddingPageVisits(t *testing.T) {
 	})
 
 	t.Run("unique view count is not incremented when visits from same ip", func(t *testing.T) {
-		page := Page{Name: "index"}
+		page := logagg.Page{Name: "index"}
 		page.AddVisit(net.ParseIP("192.0.2.1"))
 		page.AddVisit(net.ParseIP("192.0.2.1"))
 
