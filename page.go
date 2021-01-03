@@ -6,19 +6,19 @@ type Page struct {
 	Name        string
 	Visits      int
 	UniqueViews int
-	vistorIPs   []net.IP
+	VistorIPs   []net.IP
 }
 
 func (p *Page) AddVisit(visitIP net.IP) {
 	p.Visits++
 	if p.visitAddressUnique(visitIP) {
 		p.UniqueViews++
-		p.vistorIPs = append(p.vistorIPs, visitIP)
+		p.VistorIPs = append(p.VistorIPs, visitIP)
 	}
 }
 
 func (p *Page) visitAddressUnique(visitIP net.IP) bool {
-	for _, ip := range p.vistorIPs {
+	for _, ip := range p.VistorIPs {
 		if ip.Equal(visitIP) {
 			return false
 		}
